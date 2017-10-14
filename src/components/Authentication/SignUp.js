@@ -7,7 +7,7 @@ export default class SignUp extends Component{
   constructor(props){
     super(props);
     this.state = {
-      username: '',
+      name: '',
       email: '',
       password: '',
       passwordConf: ''
@@ -15,8 +15,8 @@ export default class SignUp extends Component{
   }
 
   registerUser(){
-    const {username, email, password,passwordConf } = this.state;
-    register(email,username, password, passwordConf)
+    const {name, email, password,passwordConf } = this.state;
+    register(email,name, password, passwordConf)
     .then(res => {
       if(res === 'THANH_CONG') return this.onSucces();
       this.onFail();
@@ -52,10 +52,10 @@ export default class SignUp extends Component{
       <View>
       <TextInput
         style={inputStyle}
-        value={this.state.username}
-        onChangeText={text => this.setState({username: text})}
+        value={this.state.name}
+        onChangeText={text => this.setState({name: text})}
         underlineColorAndroid="transparent"
-        placeholder="Enter your username"
+        placeholder="Enter your name"
       />
       <TextInput
         style={inputStyle}

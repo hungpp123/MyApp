@@ -50,7 +50,7 @@ export default class Menu extends Component{
     );
     const loginJSX=(
       <View style={loginContainer}>
-        <Text style={username}>{user ? user.username : ''}</Text>
+        <Text style={username}>{user ? user.name : ''}</Text>
         <View>
           <TouchableOpacity style={btnSignInStyle} onPress={this.gotoOrderHistory.bind(this)}>
             <Text style={btnTextSignIn}>Order History</Text>

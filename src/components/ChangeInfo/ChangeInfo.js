@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import {
-    View, TouchableOpacity, Text, Image, StyleSheet, TextInput
+    View, TouchableOpacity, Text, Image, StyleSheet, TextInput,Alert
 } from 'react-native';
 import backSpecial from '../../appIcon/backs.png';
-
+import getToken from '../../api/getToken';
+import ChangeInfoApi from '../../api/changeInfo';
+import global from '../global';
 export default class ChangeInfo extends Component {
     constructor(props) {
         super(props);
@@ -17,6 +19,28 @@ export default class ChangeInfo extends Component {
     goBackToMain() {
         const { navigator } = this.props;
         navigator.pop();
+    }
+
+    alertSuccess(){
+      Alert.alert(
+        'Notice',
+        'Update info successfully',
+        [
+          {text: 'OK', onPress: this.goBackToMain.bind(this)},
+        ],
+        { cancelable: false }
+      )
+    }
+
+    change(){
+      const { txtName, txtAddress, txtPhone} = this.state;
+      getToken()
+      .then(token => ChangeInfoApi(token, txtName, txtPhone, txtAddress))
+      .then(res => {
+        this.alertSuccess();
+        global.onSignIn(res.user);
+      })
+      .catch(err =>console.log(err));
     }
 
     render() {
@@ -59,7 +83,7 @@ export default class ChangeInfo extends Component {
                         value={txtPhone}
                         onChangeText={txtPhone => this.setState({ ...this.state, txtPhone })}
                     />
-                    <TouchableOpacity style={signInContainer}>
+                    <TouchableOpacity style={signInContainer} onPress={this.change.bind(this)}>
                         <Text style={signInTextStyle}>CHANGE YOUR INFOMATION</Text>
                     </TouchableOpacity>
                 </View>

@@ -11,7 +11,7 @@ import refreshToken from '../api/refreshToken';
 //import { StackNavigator } from 'react-navigation';
 export default class App extends Component {
   componentDidMount(){
-    setInterval(refreshToken, 60*1000);
+    setInterval(refreshToken, 60*1000*6);
   }
   render() {
     return (
