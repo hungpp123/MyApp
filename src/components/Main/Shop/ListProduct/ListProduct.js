@@ -1,10 +1,31 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity,
-        StyleSheet, ScrollView, Image } from 'react-native';
+        StyleSheet, ScrollView, Image, ListView } from 'react-native';
 
+import getListProduct from '../../../../api/getListProduct';
 import backList from "../../../../appIcon/backList.png";
 import sp1 from "../../../../temp/sp1.jpeg";
+
+const url = 'http://192.168.1.92:3000/images/product/';
+
 export default class ListProduct extends Component {
+  constructor(props){
+    super(props);
+    const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
+    this.state={
+      listProducts:ds.cloneWithRows([1])
+    }
+  }
+
+  componentDidMount(){
+    const idType = this.props.category._id;
+    getListProduct(idType,1)
+    .then(arrProducts => {
+      this.setState({listProducts:this.state.listProducts.cloneWithRows(arrProducts.product)});
+      console.log(arrProducts.product[0].images[0]);
+    })
+    .catch(err => console.log(err));
+  }
   goBack(){
     const {navigator} = this.props;
     navigator.pop();
@@ -18,77 +39,39 @@ export default class ListProduct extends Component {
             titleStyle, productContainer, productImage,
             productInfo, lastRowInfo,
             txtName, txtPrice, txtMaterial, txtColor, txtShowDetail} = styles;
+    const {category} = this.props;
     return (
       <View style={container}>
-        <ScrollView style={wrapper}>
+        <View style={wrapper}>
           <View style={header}>
             <TouchableOpacity onPress={this.goBack.bind(this)}>
               <Image source={backList} style={backStyle}/>
             </TouchableOpacity>
-            <Text style={titleStyle}>Party Dress</Text>
+            <Text style={titleStyle}>{category.name}</Text>
             <View style={{width:30}}/>
           </View>
-          <View style={productContainer}>
-              <Image style={productImage} source={sp1}/>
-            <View style={productInfo}>
-              <Text style={txtName}>Lace Sleeve Si</Text>
-              <Text style={txtPrice}>117$</Text>
-              <Text style={txtMaterial}>Material Silk</Text>
-              <View style={lastRowInfo}>
-                <Text style={txtColor}>Color RoyalBlue</Text>
-                <View style={{backgroundColor:'cyan', height:16, width:16, borderRadius:8}}/>
-                <TouchableOpacity>
-                  <Text style={txtShowDetail}>SHOW DETAILS</Text>
-                </TouchableOpacity>
+          <ListView
+            removeClippedSubViews={false}
+            dataSource={this.state.listProducts}
+            renderRow={product =>(
+              <View style={productContainer}>
+                <Image style={productImage} source={{ uri: `${url}5.jpg` }}/>
+                <View style={productInfo}>
+                  <Text style={txtName}>{product.name}</Text>
+                  <Text style={txtPrice}>{product.price}</Text>
+                  <Text style={txtMaterial}>Material Silk</Text>
+                  <View style={lastRowInfo}>
+                    <Text style={txtColor}>Color RoyalBlue</Text>
+                    <View style={{backgroundColor:'cyan', height:16, width:16, borderRadius:8}}/>
+                    <TouchableOpacity>
+                      <Text style={txtShowDetail}>SHOW DETAILS</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
-            </View>
-          </View>
-          <View style={productContainer}>
-            <Image style={productImage} source={sp1}/>
-            <View style={productInfo}>
-              <Text style={txtName}>Lace Sleeve Si</Text>
-              <Text style={txtPrice}>117$</Text>
-              <Text style={txtMaterial}>Material Silk</Text>
-              <View style={lastRowInfo}>
-                <Text style={txtColor}>Color RoyalBlue</Text>
-                <View style={{backgroundColor:'cyan', height:16, width:16, borderRadius:8}}/>
-                <TouchableOpacity>
-                  <Text style={txtShowDetail}>SHOW DETAILS</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={productContainer}>
-            <Image style={productImage} source={sp1}/>
-            <View style={productInfo}>
-              <Text style={txtName}>Lace Sleeve Si</Text>
-              <Text style={txtPrice}>117$</Text>
-              <Text style={txtMaterial}>Material Silk</Text>
-              <View style={lastRowInfo}>
-                <Text style={txtColor}>Color RoyalBlue</Text>
-                <View style={{backgroundColor:'cyan', height:16, width:16, borderRadius:8}}/>
-                <TouchableOpacity>
-                  <Text style={txtShowDetail}>SHOW DETAILS</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={productContainer}>
-            <Image style={productImage} source={sp1}/>
-            <View style={productInfo}>
-              <Text style={txtName}>Lace Sleeve Si</Text>
-              <Text style={txtPrice}>117$</Text>
-              <Text style={txtMaterial}>Material Silk</Text>
-              <View style={lastRowInfo}>
-                <Text style={txtColor}>Color RoyalBlue</Text>
-                <View style={{backgroundColor:'cyan', height:16, width:16, borderRadius:8}}/>
-                <TouchableOpacity>
-                  <Text style={txtShowDetail}>SHOW DETAILS</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </ScrollView>
+            )}
+          />
+        </View>
       </View>
     );
   }
@@ -168,3 +151,28 @@ const styles = StyleSheet.create({
     fontSize:11,
   }
 });
+
+// <ScrollView style={wrapper}>
+//   <View style={header}>
+//     <TouchableOpacity onPress={this.goBack.bind(this)}>
+//       <Image source={backList} style={backStyle}/>
+//     </TouchableOpacity>
+//     <Text style={titleStyle}>{category.name}</Text>
+//     <View style={{width:30}}/>
+//   </View>
+  // <View style={productContainer}>
+  //     <Image style={productImage} source={sp1}/>
+  //   <View style={productInfo}>
+  //     <Text style={txtName}>Lace Sleeve Si</Text>
+  //     <Text style={txtPrice}>117$</Text>
+  //     <Text style={txtMaterial}>Material Silk</Text>
+  //     <View style={lastRowInfo}>
+  //       <Text style={txtColor}>Color RoyalBlue</Text>
+  //       <View style={{backgroundColor:'cyan', height:16, width:16, borderRadius:8}}/>
+  //       <TouchableOpacity>
+  //         <Text style={txtShowDetail}>SHOW DETAILS</Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //   </View>
+  // </View>
+// </ScrollView>
