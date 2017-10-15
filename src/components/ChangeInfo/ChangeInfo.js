@@ -38,7 +38,7 @@ export default class ChangeInfo extends Component {
       .then(token => ChangeInfoApi(token, txtName, txtPhone, txtAddress))
       .then(res => {
         this.alertSuccess();
-        global.onSignIn(res.user);
+        global.onSignIn(res);
       })
       .catch(err =>console.log(err));
     }
