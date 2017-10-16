@@ -4,16 +4,18 @@ import { View, Text, TouchableOpacity,
 
 import getListProduct from '../../../../api/getListProduct';
 import backList from "../../../../appIcon/backList.png";
-import sp1 from "../../../../temp/sp1.jpeg";
 
 const url = 'http://192.168.1.92:3000/images/product/';
+
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+}
 
 export default class ListProduct extends Component {
   constructor(props){
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
     this.state={
-      listProducts:ds.cloneWithRows([1])
+      listProducts:[]
     }
   }
 
@@ -21,7 +23,7 @@ export default class ListProduct extends Component {
     const idType = this.props.category._id;
     getListProduct(idType,1)
     .then(arrProducts => {
-      this.setState({listProducts:this.state.listProducts.cloneWithRows(arrProducts.product)});
+      this.setState({listProducts:arrProducts.product});
       console.log(arrProducts.product[0].images[0]);
     })
     .catch(err => console.log(err));
@@ -51,17 +53,17 @@ export default class ListProduct extends Component {
             <View style={{width:30}}/>
           </View>
           <ListView
+            enableEmptySections
             removeClippedSubViews={false}
-            dataSource={this.state.listProducts}
-            renderRow={product =>(
+            dataSource={new ListView.DataSource({rowHasChanged: (r1,r2)=> r1 !== r2}).cloneWithRows(this.state.listProducts)}
+            renderRow={(product) =>(
               <View style={productContainer}>
-                <Image style={productImage} source={{ uri: `${url}5.jpg` }}/>
+                <Image style={productImage} source={{ uri: `${url}${product.images[0]}` }}/>
                 <View style={productInfo}>
                   <Text style={txtName}>{product.name}</Text>
                   <Text style={txtPrice}>{product.price}</Text>
-                  <Text style={txtMaterial}>Material Silk</Text>
                   <View style={lastRowInfo}>
-                    <Text style={txtColor}>Color RoyalBlue</Text>
+                    <Text style={txtColor}>{product.color}</Text>
                     <View style={{backgroundColor:'cyan', height:16, width:16, borderRadius:8}}/>
                     <TouchableOpacity>
                       <Text style={txtShowDetail}>SHOW DETAILS</Text>
