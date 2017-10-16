@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity,
-        StyleSheet, ScrollView, Image, ListView } from 'react-native';
+        StyleSheet, ScrollView, Image, ListView, RefreshControl } from 'react-native';
 
 import getListProduct from '../../../../api/getListProduct';
 import backList from "../../../../appIcon/backList.png";
@@ -15,8 +15,10 @@ export default class ListProduct extends Component {
   constructor(props){
     super(props);
     this.state={
-      listProducts:[]
-    }
+      listProducts:[],
+      refreshing: false,
+      page: 1
+    };
   }
 
   componentDidMount(){
@@ -24,7 +26,6 @@ export default class ListProduct extends Component {
     getListProduct(idType,1)
     .then(arrProducts => {
       this.setState({listProducts:arrProducts.product});
-      console.log(arrProducts.product[0].images[0]);
     })
     .catch(err => console.log(err));
   }
@@ -32,10 +33,11 @@ export default class ListProduct extends Component {
     const {navigator} = this.props;
     navigator.pop();
   }
-  gotoDetail(){
+  gotoDetail(product){
     const {navigator} = this.props;
-    navigator.push({name:'PRODUCT_DETAIL'});
+    navigator.push({name:'PRODUCT_DETAIL', product});
   }
+
   render() {
     const { container, header, wrapper, backStyle,
             titleStyle, productContainer, productImage,
@@ -63,15 +65,34 @@ export default class ListProduct extends Component {
                   <Text style={txtName}>{product.name}</Text>
                   <Text style={txtPrice}>{product.price}</Text>
                   <View style={lastRowInfo}>
-                    <Text style={txtColor}>{product.color}</Text>
-                    <View style={{backgroundColor:'cyan', height:16, width:16, borderRadius:8}}/>
-                    <TouchableOpacity>
+                    <Text style={txtColor}>Color: {product.color}</Text>
+                    <View style={{backgroundColor:product.color.toLowerCase(), height:16, width:16, borderRadius:8}}/>
+                    <TouchableOpacity onPress={()=>this.gotoDetail(product)}>
                       <Text style={txtShowDetail}>SHOW DETAILS</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
               </View>
             )}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={() => {
+                  this.setState({refreshing:true});
+                  const newPage = this.state.page +1;
+                  this.setState({page:newPage});
+                  const idType = this.props.category._id;
+                  getListProduct(idType,newPage)
+                  .then(arrProducts => {
+                    this.setState({
+                      listProducts:arrProducts.product.concat(this.state.listProducts),
+                      refreshing:false
+                    });
+                  })
+                  .catch(err => console.log(err));
+                }}
+              />
+            }
           />
         </View>
       </View>
