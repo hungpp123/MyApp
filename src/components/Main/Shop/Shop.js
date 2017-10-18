@@ -39,6 +39,8 @@ export default class Shop extends Component{
     global.gotoSearch = this.gotoSearch.bind(this);
   }
   addProductToCart(product){
+    const isExist = this.state.cartArray.some(e => e.product._id === product._id);
+    if(isExist) return false;
     this.setState(
       { cartArray: this.state.cartArray.concat({product: product, quantity: 1})},
       () => saveCart(this.state.cartArray)
@@ -94,7 +96,7 @@ export default class Shop extends Component{
     const {iconStyle} = styles;
     const {types, selectedTab, topProducts, cartArray} = this.state;
     return(
-      <View style={{flex:1}}>
+      <View style={{flex:1,backgroundColor:'rgb(194, 216, 233)'}}>
         <Header onOpen={this.openMenu.bind(this)}/>
         <TabNavigator>
           <TabNavigator.Item

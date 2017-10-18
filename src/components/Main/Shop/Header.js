@@ -19,8 +19,9 @@ export default class Header extends Component{
 
   onSearch(){
     const {txtSearch} = this.state;
+    this.setState({txtSearch:''});
     search(txtSearch)
-    .then(arr => console.log(arr.product))
+    .then(arr => global.setSearchArray(arr.product))
     .catch(err => console.log(err))
   }
   render(){
@@ -37,6 +38,7 @@ export default class Header extends Component{
         <TextInput style={textInput}
                   placeholder="What do you want to buy?"
                   underlineColorAndroid="transparent"
+                  value={this.state.txtSearch}
                   onChangeText={text => this.setState({txtSearch:text})}
                   onFocus={() => global.gotoSearch()}
                   onSubmitEditing={this.onSearch.bind(this)}
