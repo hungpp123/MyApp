@@ -36,6 +36,7 @@ export default class Shop extends Component{
     global.incrQuantity = this.incrQuantity.bind(this);
     global.decrQuantity = this.decrQuantity.bind(this);
     global.removeProduct = this.removeProduct.bind(this);
+    global.gotoSearch = this.gotoSearch.bind(this);
   }
   addProductToCart(product){
     this.setState(
@@ -80,6 +81,11 @@ export default class Shop extends Component{
     getCart()
     .then(cartArray => this.setState({cartArray: cartArray}));
   }
+
+  gotoSearch(){
+    this.setState({selectedTab:'search'});
+  }
+
   openMenu(){
     const { open } = this.props;
     open();

@@ -3,11 +3,26 @@ import { View, Text, TouchableOpacity, Dimensions, Image, TextInput, StyleSheet 
 
 import icLogo  from '../../../appIcon/logo.jpg';
 import icMenu  from '../../../appIcon/ic_menu.png';
+import global from '../../global';
+import search from '../../../api/searchProduct';
 const url = 'http://192.168.1.92:3000/images/appIcon/';
 
 const { height } = Dimensions.get('window');
 
 export default class Header extends Component{
+  constructor(props){
+    super(props);
+    this.state={
+      txtSearch:''
+    }
+  }
+
+  onSearch(){
+    const {txtSearch} = this.state;
+    search(txtSearch)
+    .then(arr => console.log(arr.product))
+    .catch(err => console.log(err))
+  }
   render(){
     const { wrapper, row1, textInput, iconStyle, titleStyle} = styles;
     return(
@@ -22,6 +37,9 @@ export default class Header extends Component{
         <TextInput style={textInput}
                   placeholder="What do you want to buy?"
                   underlineColorAndroid="transparent"
+                  onChangeText={text => this.setState({txtSearch:text})}
+                  onFocus={() => global.gotoSearch()}
+                  onSubmitEditing={this.onSearch.bind(this)}
         />
       </View>
     );
