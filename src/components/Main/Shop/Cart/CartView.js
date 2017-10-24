@@ -11,7 +11,8 @@ function toTitleCase(str) {
 }
 
 import global from '../../../global.js';
-
+import sendOrder from '../../../../api/sendOrder';
+import getToken from '../../../../api/getToken';
 const url = 'http://192.168.1.92:3000/images/product/';
 
 class CartView extends Component {
@@ -27,10 +28,30 @@ class CartView extends Component {
       global.removeProduct(id);
     }
 
-    gotoDetail() {
+    gotoDetail(product) {
         const { navigator } = this.props;
-        navigator.push({ name: 'PRODUCT_DETAIL' });
+        navigator.push({ name: 'PRODUCT_DETAIL', product });
     }
+
+    async onSendOrder(){
+      try{
+        const token = await getToken();
+        const bill_detail = this.props.cartArray.map(e => ({
+          id_product:e.product._id,
+          quantity:e.quantity,
+          price:e.product.price
+        }));
+        const kq = await sendOrder(token, bill_detail);
+        if(kq === 'THANH_CONG'){
+          console.log('THANH_CONG');
+        }else{
+          console.log('THAT_BAI', kq);
+        }
+      }catch(e){
+        console.log(e);
+      }
+    }
+
     render() {
         const { main, checkoutButton, checkoutTitle, wrapper,
         productStyle, mainRight, productController,
@@ -65,11 +86,11 @@ class CartView extends Component {
                                         <Text>+</Text>
                                     </TouchableOpacity>
                                     <Text>{cartItem.quantity}</Text>
-                                    <TouchableOpacity onPress={() => this.decrQuantity(cartItem.product.id)}>
+                                    <TouchableOpacity onPress={() => this.decrQuantity(cartItem.product._id)}>
                                         <Text>-</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <TouchableOpacity style={showDetailContainer}>
+                                <TouchableOpacity style={showDetailContainer} onPress={() => this.gotoDetail(cartItem.product)}>
                                     <Text style={txtShowDetail}>SHOW DETAILS</Text>
                                 </TouchableOpacity>
                             </View>
@@ -77,7 +98,7 @@ class CartView extends Component {
                     </View>
                   )}
                 />
-                <TouchableOpacity style={checkoutButton}>
+                <TouchableOpacity style={checkoutButton} onPress={this.onSendOrder.bind(this)}>
                     <Text style={checkoutTitle}>TOTAL {total}$ CHECKOUT NOW</Text>
                 </TouchableOpacity>
             </View>
