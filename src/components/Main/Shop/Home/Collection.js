@@ -5,7 +5,10 @@ const url = 'http://192.168.1.92:3000/images/type/banner.png';
 
 const {width, height} = Dimensions.get("window");
 export default class Collection extends Component{
-
+  gotoListProduct(){
+    const {navigator} = this.props;
+    navigator.push({name:'LIST_PRODUCT', category:{name:'ADIDAS BY STELLA MCCARTNEY',_id:'COLLECTION'}})
+  }
   render(){
     const {wrapper, textStyle, imageStyle} = styles;
     return(
@@ -13,7 +16,7 @@ export default class Collection extends Component{
         <View style={{height: 50, justifyContent:"center"}}>
           <Text style={textStyle}>ADIDAS BY STELLA MCCARTNEY</Text>
         </View>
-        <TouchableOpacity style={{flex:4, justifyContent:"flex-end"}}>
+        <TouchableOpacity style={{flex:4, justifyContent:"flex-end"}} onPress={this.gotoListProduct.bind(this)}>
           <Image source={{uri:`${url}`}} style={imageStyle}/>
         </TouchableOpacity>
       </View>
