@@ -7,6 +7,12 @@ import saveToken from '../../api/saveToken.js';
 const urlProfile = 'http://192.168.1.92:3000/images/appIcon/profile.jpg';
 const urlBg = 'http://192.168.1.92:3000/images/appIcon/bg.jpg';
 
+const FBSDK = require('react-native-fbsdk');
+const {
+  LoginManager,
+} = FBSDK;
+
+
 export default class Menu extends Component{
   constructor(props){
     super(props);
@@ -21,6 +27,7 @@ export default class Menu extends Component{
   onSignOut(){
     this.setState({user: null});
     saveToken('');
+    this.handleSignOut();
   }
   gotoAuthentication(){
     const { navigator } = this.props;
@@ -35,6 +42,10 @@ export default class Menu extends Component{
     const { navigator } = this.props;
     navigator.push({name: 'ORDER_HISTORY'});
   }
+
+  handleSignOut(){
+    LoginManager.logOut();
+  }
   render(){
     const {container, profile, btnStyle,
        btnText, btnSignInStyle, btnTextSignIn,
@@ -43,9 +54,12 @@ export default class Menu extends Component{
      const {user} = this.state;
     const logoutJSX = (
       <View style={{flex:1}}>
-        <TouchableOpacity style={btnStyle} onPress={this.gotoAuthentication.bind(this)}>
-          <Text style={btnText}>Sign In</Text>
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity style={btnStyle} onPress={this.gotoAuthentication.bind(this)}>
+            <Text style={btnText}>Sign In</Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
     );
     const loginJSX=(

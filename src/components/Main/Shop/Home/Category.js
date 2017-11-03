@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   textStyle:{
     fontSize: 20,
-    color: "rgb(216, 219, 233)"
+    color: "#c61a67"
   },
   imageStyle:{
     height:imageHeight,

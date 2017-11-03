@@ -4,17 +4,58 @@ import { Text, View, TextInput, TouchableOpacity, StyleSheet, Image} from "react
 import signIn from '../../api/signIn.js';
 import global from '../global.js';
 import saveToken from '../../api/saveToken.js';
+import register from "../../api/register.js";
 const urlBg = 'http://192.168.1.92:3000/images/appIcon/bg.jpg';
+
+const FBSDK = require('react-native-fbsdk');
+const {
+  LoginButton,
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager
+} = FBSDK;
 
 export default class SignIn extends Component{
   constructor(props){
     super(props);
     this.state = {
-      email:'',
-      password: ''
+      name: '',
+      email: '',
+      password: '',
+      passwordConf: ''
     };
   }
 
+  registerUser(){
+    const {name, email, password,passwordConf } = this.state;
+    register(email,name, password, passwordConf)
+    .then(res => {
+      if(res === 'THANH_CONG') return this.onSignIn();
+      this.onSignIn();
+    });
+  }
+
+  onSucces(){
+    Alert.alert(
+      'Notice',
+      'Sign up successfully',
+      [
+        {text: 'OK', onPress: this.props.gotoSignIn()},
+      ],
+      { cancelable: false }
+    )
+  }
+
+  onFail(){
+    Alert.alert(
+      'Notice',
+      'Email has been used by other',
+      [
+        {text: 'OK', onPress: () => this.setState({ email: ''})},
+      ],
+      { cancelable: false }
+    )
+  }
 
   onSignIn(){
     const { email, password} = this.state;
@@ -51,6 +92,54 @@ export default class SignIn extends Component{
         <TouchableOpacity style={bigButton} onPress={this.onSignIn.bind(this)}>
           <Text style={buttonText}>SIGN IN NOW</Text>
         </TouchableOpacity>
+        <LoginButton
+          readPermissions={["email"]}
+          onLoginFinished={
+            (error, result) => {
+              if (error) {
+                alert("login has error: " + result.error);
+              } else if (result.isCancelled) {
+                alert("login is cancelled.");
+              } else {
+
+                AccessToken.getCurrentAccessToken().then(
+                  (data) => {
+                    let accessToken = data.accessToken;
+
+                    const responseInfoCallback = (error, result) => {
+                      if (error) {
+                        console.log(error)
+                        alert('Error fetching data: ' + error.toString());
+                      } else {
+                        console.log(result);
+                        this.setState({ name:result.name,email: result.email, password: result.id,passwordConf:result.id});
+                        this.registerUser();
+                      }
+                    }
+
+                    const infoRequest = new GraphRequest(
+                      '/me',
+                      {
+                        accessToken: accessToken,
+                        parameters: {
+                          fields: {
+                            string: 'id,name,email'
+                          }
+                        }
+                      },
+                      responseInfoCallback
+                    );
+
+                    // Start the graph request.
+                    new GraphRequestManager().addRequest(infoRequest).start()
+
+                  }
+                )
+
+              }
+            }
+          }
+          onLogoutFinished={() => alert("logout.")}/>
       </View>
     );
   }

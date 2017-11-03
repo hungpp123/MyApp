@@ -15,33 +15,35 @@ class Contact extends Component {
         } = styles;
         return (
             <View style={wrapper}>
-                <View style={mapContainer}>
-                    <Image
-                        style={{ flex: 1, alignSelf: 'stretch', width: undefined }} source={map}
-                    />
-                </View>
+
                 <View style={infoContainer}>
                     <View style={rowInfoContainer}>
                         <Image source={locationIcon} style={imageStyle} />
-                        <Text style={infoText}>90 Le Thi Rieng/ Ben Thanh Dist</Text>
+                        <Text style={infoText}>Lĩnh Nam - Hoàng Mai- Hà Nội</Text>
                     </View>
                     <View style={rowInfoContainer}>
                         <Image source={phoneIcon} style={imageStyle} />
-                        <Text style={infoText}>(+84) 01694472176</Text>
+                        <Text style={infoText}>(+84) 0912345678</Text>
                     </View>
                     <View style={rowInfoContainer}>
                         <Image source={mailIcon} style={imageStyle} />
-                        <Text style={infoText}>khoaphamtraining@gmail.com</Text>
+                        <Text style={infoText}>shopadidasauth@gmail.com</Text>
                     </View>
                     <View style={[rowInfoContainer, { borderBottomWidth: 0 }]}>
                         <Image source={messageIcon} style={imageStyle} />
-                        <Text style={infoText}>(+84) 09877067707</Text>
+                        <Text style={infoText}>(+84) 0981139964</Text>
                     </View>
                 </View>
             </View>
         );
     }
 }
+
+// <View style={mapContainer}>
+//     <Image
+//         style={{ flex: 1, alignSelf: 'stretch', width: undefined }} source={map}
+//     />
+// </View>
 
 const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
