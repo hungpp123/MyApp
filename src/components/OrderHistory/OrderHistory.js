@@ -67,10 +67,10 @@ const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     wrapper: { flex: 1, backgroundColor: '#fff' },
-    header: { flex: 1, backgroundColor: '#2ABB9C', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', paddingHorizontal: 10 },// eslint-disable-line
+    header: { flex: 1, backgroundColor: 'rgba(31, 145, 196, 0.93)', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', paddingHorizontal: 10 },// eslint-disable-line
     headerTitle: { fontFamily: 'Avenir', color: '#fff', fontSize: 20 },
     backIconStyle: { width: 30, height: 30 },
-    body: { flex: 10, backgroundColor: '#F6F6F6' },
+    body: { flex: 10, backgroundColor: 'rgb(194, 216, 233)' },
     orderRow: {
         height: width / 3,
         backgroundColor: '#FFF',

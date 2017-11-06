@@ -113,19 +113,19 @@ const imageHeight = (imageWidth * 452) / 361;
 const styles = StyleSheet.create({
     wrapper: {
         flex: 1,
-        backgroundColor: '#DFDFDF'
+        backgroundColor: 'rgb(194, 216, 233)'
     },
     checkoutButton: {
         height: 50,
         margin: 10,
         marginTop: 0,
-        backgroundColor: '#2ABB9C',
+        backgroundColor: 'rgba(31, 145, 196, 0.93)',
         borderRadius: 2,
         alignItems: 'center',
         justifyContent: 'center'
     },
     main: {
-        width, backgroundColor: '#DFDFDF'
+        width, backgroundColor: 'rgb(194, 216, 233)'
     },
     checkoutTitle: {
         color: '#FFF',

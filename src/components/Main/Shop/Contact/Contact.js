@@ -47,7 +47,7 @@ class Contact extends Component {
 
 const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
-    wrapper: { flex: 1, backgroundColor: '#F6F6F6' },
+    wrapper: { flex: 1, backgroundColor: 'rgb(194, 216, 233)' },
     mapStyle: {
         width: width - 40,
         height: 230,

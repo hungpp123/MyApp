@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 
+
 import profileIcon from "../../temp/profile.png";
 import global from '../global.js';
 import saveToken from '../../api/saveToken.js';

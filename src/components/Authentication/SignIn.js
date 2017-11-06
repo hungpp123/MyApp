@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, Image} from "react-native";
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 
 import signIn from '../../api/signIn.js';
 import global from '../global.js';
@@ -68,8 +69,16 @@ export default class SignIn extends Component{
     .catch(err => console.log(err));
   }
 
+  handleSigninGoogle() {
+    GoogleSignin.signIn().then((user) => {
+      console.log(user);
+    }).catch((err) => {
+      console.log('WRONG SIGNIN', err);
+    }).done();
+  }
+
   render(){
-    const {  inputStyle, bigButton, buttonText, backgroundImage
+    const {  inputStyle, bigButton, buttonText, backgroundImage, buttonContainer, buttonStyle, textButtonStyle
           } = styles;
     const { email, password} = this.state;
     return(
@@ -92,6 +101,7 @@ export default class SignIn extends Component{
         <TouchableOpacity style={bigButton} onPress={this.onSignIn.bind(this)}>
           <Text style={buttonText}>SIGN IN NOW</Text>
         </TouchableOpacity>
+        <View style={styles.buttonContainer}>
         <LoginButton
           readPermissions={["email"]}
           onLoginFinished={
@@ -140,6 +150,11 @@ export default class SignIn extends Component{
             }
           }
           onLogoutFinished={() => alert("logout.")}/>
+
+            <TouchableOpacity style={styles.buttonStyle} onPress={() => this.handleSigninGoogle()}>
+              <Text style={styles.textButtonStyle}>Sign in with Google +</Text>
+            </TouchableOpacity>
+          </View>
       </View>
     );
   }
@@ -172,5 +187,26 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     width: null,
     resizeMode: 'stretch', // or 'stretch',
+  },
+  buttonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    flexDirection:"row",
+    backgroundColor:"rgba(31, 145, 196, 0.93)",
+    marginBottom:10
+  },
+  buttonStyle: {
+    padding: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: '#F00',
+    borderRadius: 5,
+    marginLeft:5
+  },
+  textButtonStyle: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#FFF'
   }
 });

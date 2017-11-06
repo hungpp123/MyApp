@@ -8,7 +8,7 @@ import img2 from '../../../../temp/sp4.jpeg';
 import global from '../../../global.js';
 
 const back = require('../../../../appIcon/back.png');
-const cart = require('../../../../appIcon/cartfull.png');
+const cart = require('../../../../appIcon/cart.png');
 
 const url = 'http://192.168.1.92:3000/images/product/';
 

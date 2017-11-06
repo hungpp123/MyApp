@@ -47,7 +47,7 @@ export default class Authentication extends Component {
           <TouchableOpacity onPress={this.goBackToMain.bind(this)}>
             <Image source={icBack} style={iconStyle}/>
           </TouchableOpacity>
-          <Text style={titleStyle}>SHOP NOW</Text>
+          <Text style={titleStyle}>WHAT IS TRENDING</Text>
           <Image source={icLogo} style={iconStyle}/>
         </View>
         <View>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   justifyContent:"space-between",
   alignItems:'center'
   },
-  titleStyle: {color:"#FFF", fontFamily:'Avenir',fontSize:30},
+  titleStyle: {color:"#FFF", fontFamily:'Avenir',fontSize:20},
   iconStyle: {width:30,height:30},
   controlStyle:{
     flexDirection:"row",
