@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 
 import profileIcon from "../../temp/profile.png";
 import global from '../global.js';
@@ -25,10 +25,21 @@ export default class Menu extends Component{
     this.setState({user: user});
   }
 
+  onSignOutGoogle(){
+    GoogleSignin.signOut()
+      .then(() => {
+        console.log('out');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   onSignOut(){
     this.setState({user: null});
     saveToken('');
     this.handleSignOut();
+    this.onSignOutGoogle();
   }
   gotoAuthentication(){
     const { navigator } = this.props;

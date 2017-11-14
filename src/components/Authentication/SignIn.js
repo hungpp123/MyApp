@@ -72,10 +72,20 @@ export default class SignIn extends Component{
   handleSigninGoogle() {
     GoogleSignin.signIn().then((user) => {
       console.log(user);
+      this.setState({ name:user.name,email: user.email, password: user.id,passwordConf:user.id});
+      this.registerUser();
     }).catch((err) => {
       console.log('WRONG SIGNIN', err);
     }).done();
   }
+
+  componentWillMount() {
+    GoogleSignin.hasPlayServices({ autoResolve: true });
+    GoogleSignin.configure({
+      webClientId: '588668677741-ua2hmgslnr6psq9crvcbc870sfkk8i8a.apps.googleusercontent.com'
+    })
+  }
+
 
   render(){
     const {  inputStyle, bigButton, buttonText, backgroundImage, buttonContainer, buttonStyle, textButtonStyle
